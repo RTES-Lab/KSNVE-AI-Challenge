@@ -23,10 +23,31 @@
 pip install -r requirements.txt
 ```
 
-# 테스트용 코드 실행
+# 모델 훈련 코드 실행
 
-테스트용 코드 및 모델 코드를 변형시켜가며 테스트 수행 요망
+딥러닝 모델을 훈련하고자 할 경우 (코드를 수정하여 임의의 전처리 시퀀스, 모델 사용 가능)
 
 ```
-python run.py
+python run_fit_dl.py
+```
+
+# ML 모델 검증 코드 실행
+
+Features를 선택하여 ML 이상탐지 모델을 검증할 경우 (코드를 수정하여 임의의 모델, 특성추출, ML 모델 사용 가능)
+
+```
+python run_fit_ml.py
+```
+
+# 사전훈련된 모델
+
+사전훈련된 모델의 가중치는 다음 디렉토리에 저장
+
+```
+.result/
+    ㄴ 1dcae --> 직교좌표 1D CAE
+    ㄴ 1dcae_polar --> 직교+극좌표 1D CAE
+    ㄴ lstm1dcae --> 직교좌표 1D LSTM CAE
+    ㄴ lstm1dcae_polar --> 직교+극좌표 1D LSTM CAE
+    ㄴ stft2dcae --> STFT 2D CAE
 ```

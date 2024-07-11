@@ -68,12 +68,18 @@ class MovingFilter:
 
 
 class Polar:
+    def __init__(self, idx=(0, 1, 2, 3)):
+        self.idx = idx
+
     def __call__(self, x):
         px = x[0]
         py = x[1]
         r = np.sqrt(px**2, py**2)
         theta = np.arctan2(py, px)
         ret = np.vstack((px, py, r, theta)).astype("float32")
+        ret = ret[self.idx, :]
+        if ret.ndim == 1:
+            ret = np.expand_dims(ret, 0)
 
         return ret
 
@@ -86,6 +92,22 @@ class EMD:
         z = z.astype("float32")
         ret = np.vstack((y, z))
         return ret
+
+
+class STFT2D:
+    def __init__(self, power=False):
+        self.power = power
+
+    def __call__(self, x):
+        y = np.abs(
+            signal.stft(x, fs=25600, nperseg=384, nfft=384, scaling="spectrum")[2][
+                :, :128, :128
+            ]
+        ).astype("float32")
+        if self.power:
+            y = 20 * np.log10(y)
+
+        return y
 
 
 class STFT:

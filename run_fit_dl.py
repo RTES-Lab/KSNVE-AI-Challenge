@@ -29,7 +29,22 @@ df_val = data.generate_df("./dataset/eval")
 ########## 훈련에 필요한 파라미터 입력 ##########
 result_dir = "./logs/test"  # 훈련 결과를 저장할 위치
 
-# 데이터 전처리 시퀀스
+# 직교좌표만 쓰는경우
+# tf = transforms.Compose(
+#     [
+#         proc.NpToTensor(),
+#     ]
+# )
+
+# STFT 변환 사용할 경우
+# tf = transforms.Compose(
+#     [
+#         proc.STFT2D(),
+#         proc.NpToTensor(),
+#     ]
+# )
+
+# 데이터 전처리 시퀀스 (직교좌표 + 극좌표 사용하는 경우)
 tf = transforms.Compose(
     [
         proc.Polar(),
@@ -41,8 +56,8 @@ batch_size = 16  # 배치 크기
 n_epochs = 400  # 에폭 수
 n_workers = 8  # 데이터 로딩에 사용할 코어수
 
-model = cae.LSTM1DCAE  # 사용할 모델
-model_kwargs = None  # 사용할 모델에 들어갈 인자
+model = cae.Simple1DCAE  # 사용할 모델
+model_kwargs = {"in_channels": 4, "hidden_dim": 512}  # 사용할 모델에 들어갈 인자
 
 optim = torch.optim.Adam  # 사용할 최적화 알고리즘
 optim_kwargs = {"lr": 0.004}  # 사용할 최적화 알고리즘에 들어갈 인자
@@ -50,7 +65,7 @@ optim_kwargs = {"lr": 0.004}  # 사용할 최적화 알고리즘에 들어갈 �
 loss = torch.nn.MSELoss  # 사용할 손실함수
 loss_kwargs = None  # 사용할 손실함수에 들어갈 인자
 
-use_md = True  # 마할라노비스 거리 사용할건지?
+use_md = False  # 마할라노비스 거리 사용할건지?
 ##########                  ##########
 
 print("#2 Generate DataLoader...")

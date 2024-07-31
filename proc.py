@@ -2,6 +2,7 @@ import torch
 import scipy.signal as signal
 import numpy as np
 import emd
+import pywt
 from sklearn.preprocessing import normalize
 
 
@@ -51,6 +52,19 @@ class FFT:
 
         return ret
 
+class DWT:
+    def __call__(self, x):
+        px = x[0]
+        py = x[1]
+        wx = pywt.wavedec(px, "db4", level=4)
+        # wy = pywt.wavedec(py, "db4", level=4)
+        cax = wx[0].ravel()[:1024]
+        cdx = wx[1].ravel()[:1024]
+        # cay = wy[0].ravel()[:1024]
+        # cdy = wy[1].ravel()[:1024]
+        ret = np.vstack((cax, cdx)).astype("float32")
+
+        return ret
 
 class MovingFilter:
     def __call__(self, x):

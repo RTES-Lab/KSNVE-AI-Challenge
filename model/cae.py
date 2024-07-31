@@ -225,6 +225,77 @@ class Simple1DCAE(nn.Module):
         return x
 
 
+class FCAE(nn.Module):
+    def __init__(self, in_channels=2, denoise=False):
+        super(FCAE, self).__init__()
+
+        if denoise:
+            first = nn.Dropout(0.5)
+        else:
+            first = nn.Identity()
+
+        self.encoder = nn.Sequential(
+            first,
+            Downsample(in_channels, 32, 256, 16, nn.LeakyReLU, True),
+            Downsample(32, 64, 32, 16, nn.LeakyReLU, True),
+            Downsample(64, 128, 16, 2, nn.LeakyReLU, True),
+            Downsample(128, 128, 8, 2, nn.LeakyReLU, True),
+        )
+
+        self.decoder = nn.Sequential(
+            Upsample(128, 128, 8, 2, nn.LeakyReLU, True),
+            Upsample(128, 64, 16, 2, nn.LeakyReLU, True),
+            Upsample(64, 32, 32, 16, nn.LeakyReLU, True),
+            Upsample(32, in_channels, 256, 16, False, False),
+        )
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = self.decoder(x)
+
+        return x
+
+    def get_latent_feature(self, x):
+        x = self.encoder(x)
+        x = self.flatten(x)
+        x = self.mlp[0](x)
+        x = self.mlp[1](x)
+        x = self.mlp[2](x)
+
+        return x
+
+
+class TinyFCAE(nn.Module):
+    def __init__(self, in_channels=2, denoise=False):
+        super(TinyFCAE, self).__init__()
+
+        if denoise:
+            first = nn.Dropout(0.5)
+        else:
+            first = nn.Identity()
+
+        self.encoder = nn.Sequential(
+            first,
+            Downsample(in_channels, 32, 64, 2, nn.LeakyReLU, True),
+            Downsample(32, 64, 32, 2, nn.LeakyReLU, True),
+            Downsample(64, 128, 16, 2, nn.LeakyReLU, True),
+            Downsample(128, 128, 8, 2, nn.LeakyReLU, True),
+        )
+
+        self.decoder = nn.Sequential(
+            Upsample(128, 128, 8, 2, nn.LeakyReLU, True),
+            Upsample(128, 64, 16, 2, nn.LeakyReLU, True),
+            Upsample(64, 32, 32, 2, nn.LeakyReLU, True),
+            Upsample(32, in_channels, 64, 2, False, False),
+        )
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = self.decoder(x)
+
+        return x
+
+
 class Simple2DSTFTCAE(nn.Module):
     def __init__(self, in_channels=2):
         super(Simple2DSTFTCAE, self).__init__()

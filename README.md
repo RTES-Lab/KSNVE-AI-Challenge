@@ -20,12 +20,12 @@
 
 ## 데이터셋 다운로드
 
-데이터의 용량이 높으므로 git 저장소는 원본 데이터를 포함하지 않는다. 위의 **Data 다운로드 링크** 에서 **'Track 2 (Crazy data)'** 파일을 git clone한 디렉토리에 다운로드한다.
+데이터의 용량이 높으므로 git 저장소는 원본 데이터를 포함하지 않는다. [Data 다운로드 링크](https://drive.google.com/drive/folders/1zDbmSHjl6z7zc7CZE8pB3prgnbfMgLaK) 에서 **'Track 2 (Crazy data)'** 파일을 git clone한 디렉토리에 다운로드한다.
 
 ```
-.result
-.submission
-.track2_dataset/
+result/
+submission/
+track2_dataset/
     ㄴ train/
         ㄴ ...
     ㄴ eval/

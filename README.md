@@ -8,12 +8,12 @@
 
 ## 데이터셋 다운로드
 
-데이터의 용량이 높으므로 git 저장소는 원본 데이터를 포함하지 않는다. 위의 ***Data 다운로드 링크*** 에서 'Track 2 (Crazy data)' 파일을 git clone한 디렉토리에 다운로드한다.
+데이터의 용량이 높으므로 git 저장소는 원본 데이터를 포함하지 않는다. 위의 **Data 다운로드 링크** 에서 **'Track 2 (Crazy data)'** 파일을 git clone한 디렉토리에 다운로드한다.
 
 ```
-result
-submission
-track2_dataset/
+.result
+.submission
+.track2_dataset/
     ㄴ train/
         ㄴ ...
     ㄴ eval/
@@ -23,34 +23,40 @@ track2_dataset/
 ```
 
 ## 의존성 라이브러리 설치
+코드 실행에 필요한 라이브러리를 설치해야한다. (Cuda 11.7 버전 기준)
 
 ```
 pip install -r requirements.txt
 ```
 
-# train.py: train dataset으로 모델을 훈련하는 코드
-
-딥러닝 모델을 훈련하고자 할 경우 (코드를 수정하여 임의의 전처리 시퀀스, 모델 사용 가능)
+# 디렉토리 구성 요소
+## train.py
+train dataset으로 모델을 훈련하는 코드
 
 ```
 python train.py
 ```
 
-# eval.py, test.py: eval, test dataset에 대한 anomaly score 파일 생성 코드
-
-Features를 선택하여 ML 이상탐지 모델을 검증할 경우 (코드를 수정하여 임의의 모델, 특성추출, ML 모델 사용 가능)
+## eval.py / test.py
+eval, test dataset에 대한 anomaly score 파일을 생성하는 코드
 
 ```
 python eval.py
 python test.py
 ```
 
-# 사전훈련된 모델
-
-사전훈련된 모델의 가중치는 다음 디렉토리에 저장
-
+## data.py / proc.py / trainer.py
+- **data.py**: 학습 데이터셋을 만드는 함수 및 클래스가 있다.
+- **proc.py**: 데이터 전처리를 수행하는 함수 및 클래스가 있다.
+- **trainer.py**: 모델을 학습하고 평가하기 위한 함수 및 클래스가 있다.
+  
+## model / output / result / submission
+- **model**: 2D STFT Convolutional AutoEncoder, Linear AutoEncoder model 코드가 있다.
+- **output**: Linear AutoEncoder의 학습 및 추론에 사용할 데이터들의 평균과 분산이 저장되어 있다.
+- **result**: 2D STFT Convolutional AutoEncoder, Linear AutoEncoder의 학습된 가중치와 학습 및 검증 log가 있다.
 ```
 .result/
-    ㄴ linearae --> train dataset을 stft2dcae에 넣었을 때 나온 loss값과 y축에서 측정된 train data 대한 TDS(평균, rms, peak)값으로 Linear AutoEncoder를 학습한 결과
-    ㄴ stft2dcae --> train dataset의 x,y축 data를 STFT한 것으로 2D Convolutinal AutoEncoder을 학습한 결과
+    ㄴ linearae --> train dataset의 x, y축 data를 stft2dcae에 넣었을 때 나온 loss값과 y축에서 측정된 train data 대한 TDS(평균, rms, peak)값으로 Linear AutoEncoder를 학습한 결과
+    ㄴ stft2dcae --> train dataset의 x, y축 data를 STFT한 것으로 2D Convolutinal AutoEncoder을 학습한 결과
 ```
+- **submission**: eval, test data의 anomaly score 파일이 있다.

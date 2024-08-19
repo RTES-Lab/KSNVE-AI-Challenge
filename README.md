@@ -3,7 +3,13 @@
 **공식 홈페이지** :📒 [한국소음진동공학회 AI 챌린지](https://ksnve.notion.site/1-AI-2024-5e0b8972e808498fb29dbb77c42ddf36#9d0b2a7fe13f433a97d1a69470a35b26)<br>
 **Project Workspace** :📒 [Team Project Notion](https://www.notion.so/skipper0527/AI-4bd41e7a934b4329960bb453665150ec?pvs=4)<br>
 **Data 다운로드 링크** : 📒 [2024 KSNVE AI Challenge data drive](https://drive.google.com/drive/folders/1zDbmSHjl6z7zc7CZE8pB3prgnbfMgLaK)<br>
+<br>
 
+# 시스템 아키텍처
+![모델 구조](https://github.com/RTES-Lab/KSNVE-AI-Challenge/blob/final/model_architecture.png)
+
+제안된 STFT-TDS Fusion AutoEncoder (STFT-TDS FAE) 모델은 구름 베어링의 이상 탐지를 위해 설계된 혁신적인 아키텍처로, 세 가지 핵심 컴포넌트로 구성된다: Short-Time Fourier Transform (STFT) 기반 2D Convolutional AutoEncoder (CAE), Time Domain Statistics (TDS) 추출기, 그리고 Linear AutoEncoder (AE)이다. 본 모델은 베어링의 x축과 y축 방향에서 가속도계로 측정된 raw 진동 신호를 입력 데이터로 활용한다.
+<br><br>
 # 사전 준비사항
 
 ## 데이터셋 다운로드
@@ -28,7 +34,7 @@
 ```
 pip install -r requirements.txt
 ```
-
+<br>
 # 디렉토리 구성 요소
 ## train.py
 train dataset으로 모델을 훈련하는 코드

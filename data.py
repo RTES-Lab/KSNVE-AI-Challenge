@@ -2,7 +2,8 @@ import os
 
 import pandas as pd
 import numpy as np
-
+import torch
+import proc
 from torch.utils.data import Dataset
 from torch.utils.data import DataLoader
 from torchvision import transforms
@@ -12,7 +13,7 @@ from typing import Tuple
 
 def generate_df(root: str) -> pd.DataFrame:
     file_list = os.listdir(root)
-
+    file_list.sort()
     fault_map = {"normal": "H", "inner": "IR", "outer": "OR", "ball": "B"}
 
     label_map = {"normal": 0, "inner": 1, "outer": 2, "ball": 3}
@@ -81,3 +82,58 @@ def get_dataloader(
         drop_last=False,
         pin_memory=True,
     )
+
+def get_loss_from_df(
+    df: pd.DataFrame,
+    model: torch.nn.Module,
+    tf: transforms.Compose,
+    loss_fn: torch.nn.Module,
+    device: str = "cuda",
+):
+    losses = []
+    m = model.to(device).eval()
+
+    for i in df.index:
+        with torch.no_grad():
+            x = df.iloc[i]["data"].astype("float32")
+            x = tf(x).unsqueeze(0).to(device)
+            y = m(x)
+            loss = loss_fn(x, y).item()
+            losses.append(loss)
+
+    return np.array(losses)
+
+def generate_features(
+    df: pd.DataFrame,
+    model: torch.nn.Module,
+    tf: transforms.Compose,
+    loss_fn: torch.nn.Module,
+    u = None,
+    std = None
+):
+    # STFT CAE loss 계산
+    pred_stftcae = get_loss_from_df(df, model, tf, loss_fn())
+
+    # TDS features 계산
+    tdss = []
+    for i in df.index:
+        y = df.iloc[i]["data"].astype("float32")[1]
+        tds = [proc.avg(y), proc.rms(y), proc.pk(y)]
+        tdss.append(tds)
+
+    #  STFT loss와 TDS features 결합
+    features = np.hstack((np.expand_dims(pred_stftcae, 1), np.array(tdss)))
+
+    # 결합한 feautres normalize (모델을 처음 훈련하는 경우, 이후 validation, test 단계에서 사용하기 위해 u, std를 저장)
+    if u is None or std is None:
+        u = np.mean(features, axis=0)
+        std = np.std(features, axis=0)
+
+        save_dir = "./output"
+        save_path = os.path.join(save_dir, "parameters.npz")
+        os.makedirs(save_dir, exist_ok=True)
+        
+        np.savez(save_path, u=u, std=std)
+
+    features = (features - u) / std
+    return features, u, std

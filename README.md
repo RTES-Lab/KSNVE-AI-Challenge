@@ -2,7 +2,7 @@
 제 1회 한국소음진동공학회 AI 챌린지 (2024) - RTES 연구실 참여 <br>
 **공식 홈페이지** :📒 [한국소음진동공학회 AI 챌린지](https://ksnve.notion.site/1-AI-2024-5e0b8972e808498fb29dbb77c42ddf36#9d0b2a7fe13f433a97d1a69470a35b26)<br>
 **Project Workspace** :📒 [Team Project Notion](https://www.notion.so/skipper0527/AI-4bd41e7a934b4329960bb453665150ec?pvs=4)<br>
-**Data 다운로드 링크** : 📒 [2024 KSNVE AI Challenge data drive](https://drive.google.com/drive/folders/1zDbmSHjl6z7zc7CZE8pB3prgnbfMgLaK)<br>
+**Data (Track 2) 다운로드 링크** : 📒 [2024 KSNVE AI Challenge data drive](https://drive.google.com/drive/folders/1zDbmSHjl6z7zc7CZE8pB3prgnbfMgLaK)<br>
 <br>
 
 # 시스템 아키텍처

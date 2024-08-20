@@ -35,7 +35,7 @@ track2_dataset/
 ```
 
 ## 의존성 라이브러리 설치
-코드 실행에 필요한 라이브러리를 설치해야한다. (Cuda 11.7 버전 기준)
+코드 실행에 필요한 라이브러리를 설치해야한다. (Cuda 11.8 버전 기준)
 
 ```
 pip install -r requirements.txt

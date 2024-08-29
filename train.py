@@ -37,12 +37,10 @@ def train_stft(result_dir,
                 n_epochs,
                 n_workers,
                 df_train,
-                df_val,
                 seed,
                 verbose=True):
     set_seed(seed)
     train_loader = data.get_dataloader(df_train, tf, None, True, batch_size, n_workers)
-    val_loader = data.get_dataloader(df_val, tf, None, False, 1, n_workers)
 
     trainer = Trainer(
     model,
@@ -52,13 +50,11 @@ def train_stft(result_dir,
     loss,
     loss_kwargs,
     train_loader,
-    val_loader,
+    None,
     "cuda",
     )
 
     trainer.train(n_epochs, verbose)
-    log = trainer.val()
-    trainer.save(result_dir)
 
     return trainer
 
@@ -108,15 +104,7 @@ def train_linear(result_dir,
     )
 
     trainer.train(n_epochs, verbose)
-    log = trainer.val()
     trainer.save(result_dir)
-
-    # ROC-AUC 테스트용 코드
-    class_aucs, total_auc = multiclass_roc_auc(np.array(log["gt"]), np.array(log["pred"]))
-
-    for i, class_auc in enumerate(class_aucs):
-        print(f"CLASS {i}, ROC-AUC {class_auc}")
-    print(f"TOTAL, ROC-AUC {total_auc}")
 
     return trainer
 
@@ -136,10 +124,9 @@ if __name__ == "__main__":
         loss_kwargs=None,
         tf=transforms.Compose([proc.STFT2D(),proc.NpToTensor(),]),
         batch_size=32,
-        n_epochs=200,
+        n_epochs=300,
         n_workers=0,
         df_train=df_train,
-        df_val=df_val,
         seed=42,
         verbose=True
     )

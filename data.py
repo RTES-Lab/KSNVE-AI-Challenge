@@ -10,10 +10,23 @@ from torchvision import transforms
 
 from typing import Tuple
 
+def extract_key(file_name):
+    base_name = os.path.splitext(os.path.basename(file_name))[0]
+    parts = base_name.split('_')
+    
+    # 접두사 (vibration_ball, vibration_inner 등)
+    prefix = "_".join(parts[:2])
+    
+    # 숫자 부분
+    first_number = int(parts[2])
+    second_number = int(parts[3])
+    
+    return (prefix, first_number, second_number)
 
 def generate_df(root: str) -> pd.DataFrame:
     file_list = os.listdir(root)
-    file_list.sort()
+    file_list = sorted(file_list, key=extract_key)
+
     fault_map = {"normal": "H", "inner": "IR", "outer": "OR", "ball": "B"}
 
     label_map = {"normal": 0, "inner": 1, "outer": 2, "ball": 3}

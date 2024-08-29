@@ -49,12 +49,24 @@ def calculate_score_and_save_csv(result_dir, loss_fn, df, filename, batch_size=1
 
     # 디렉토리가 존재하지 않으면 생성
     os.makedirs(result_dir, exist_ok=True)
-    pd.DataFrame(log).to_csv(f"{result_dir}/{filename})", index=False)
+    pd.DataFrame(log).to_csv(f"{result_dir}/{filename}", index=False)
     
+def extract_key(file_name):
+    base_name = os.path.splitext(os.path.basename(file_name))[0]
+    parts = base_name.split('_')
+    
+    # 접두사 (vibration_ball, vibration_inner 등)
+    prefix = "_".join(parts[:2])
+    
+    # 숫자 부분
+    first_number = int(parts[2])
+    second_number = int(parts[3])
+    
+    return (prefix, first_number, second_number)
 
 def generate_df2(root: str) -> pd.DataFrame:
     file_list = os.listdir(root)
-    file_list.sort()
+    file_list = sorted(file_list, key=extract_key)
 
     df = {"data": [], "label": []}
 
@@ -73,8 +85,6 @@ if __name__ == "__main__":
     print("#1 Generate Dataframe...")
     df_val = generate_df2("./track2_dataset/eval")
     
-
-
     print("#2 Calculate loss score and save to CSV for validation set...")
     calculate_score_and_save_csv(
         result_dir="./submission",

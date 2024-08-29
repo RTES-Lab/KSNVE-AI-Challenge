@@ -7,7 +7,6 @@ from sklearn.preprocessing import normalize
 def rms(x):
     return np.sqrt(np.mean(x * x))
 
-
 def pk(x):
     return np.max(np.abs(x))
 

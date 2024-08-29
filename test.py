@@ -49,12 +49,17 @@ def calculate_score_and_save_csv(result_dir, loss_fn, df, filename, batch_size=1
 
     # 디렉토리가 존재하지 않으면 생성
     os.makedirs(result_dir, exist_ok=True)
-    pd.DataFrame(log).to_csv(f"{result_dir}/{filename})", index=False)
+    pd.DataFrame(log).to_csv(f"{result_dir}/{filename}", index=False)
     
+def extract_key(file_name):
+    base_name = os.path.splitext(os.path.basename(file_name))[0]
+    selected_part = base_name.split('_')[1]
+    
+    return selected_part
 
 def generate_df2(root: str) -> pd.DataFrame:
     file_list = os.listdir(root)
-    file_list.sort()
+    file_list = sorted(file_list, key=extract_key)
 
     df = {"data": [], "label": []}
 
@@ -72,8 +77,6 @@ def generate_df2(root: str) -> pd.DataFrame:
 if __name__ == "__main__":
     print("#1 Generate Dataframe...")
     df_val = generate_df2("./track2_dataset/test")
-    
-
 
     print("#2 Calculate loss score and save to CSV for test set...")
     calculate_score_and_save_csv(

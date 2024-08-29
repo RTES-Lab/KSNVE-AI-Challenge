@@ -90,7 +90,7 @@ if __name__ == "__main__":
         result_dir="./submission",
         loss_fn=torch.nn.MSELoss,
         df=df_val,
-        filename="validation_results.csv",
+        filename="eval_score.csv",
         batch_size=1,
         n_workers=0
     )

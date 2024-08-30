@@ -55,6 +55,7 @@ def train_stft(result_dir,
     )
 
     trainer.train(n_epochs, verbose)
+    trainer.save(result_dir)
 
     return trainer
 

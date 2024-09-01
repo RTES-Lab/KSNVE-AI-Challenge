@@ -109,8 +109,6 @@ class Trainer:
     def save(self, dir: str):
         os.makedirs(dir, exist_ok=True)
         torch.save(self.model, f"{dir}/model.pt")
-        pd.DataFrame(self.train_log).to_csv(f"{dir}/train_log.csv", index=False)
-        pd.DataFrame(self.val_log).to_csv(f"{dir}/val_log.csv", index=False)
 
 
 def multiclass_roc_auc(gt, pred):

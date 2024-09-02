@@ -33,6 +33,8 @@ def calculate_score_and_save_csv(result_dir, loss_fn, df, filename, batch_size=1
             "Score": []
             
     }
+
+    file_names = df["filename"].values.tolist()
     with torch.no_grad():
         for i, k in enumerate(loader):
             x, y = k
@@ -44,7 +46,7 @@ def calculate_score_and_save_csv(result_dir, loss_fn, df, filename, batch_size=1
             loss = loss_fn()(yhat, x)
 
             file_number = f"{i:04d}"
-            log["File"].append(file_number)
+            log["File"].append(file_names[i])
             log["Score"].append(loss.item())
 
     # 디렉토리가 존재하지 않으면 생성
@@ -61,13 +63,14 @@ def generate_df2(root: str) -> pd.DataFrame:
     file_list = os.listdir(root)
     file_list = sorted(file_list, key=extract_key)
 
-    df = {"data": [], "label": []}
+    df = {"filename": [], "data": [], "label": []}
 
     for filename in file_list:
         data = pd.read_csv(f"{root}/{filename}")
         x = data["bearingB_x"].values.ravel()
         y = data["bearingB_y"].values.ravel()
         cat_data = np.vstack((x, y))
+        df["filename"].append(filename)
         df["data"].append(cat_data)
         df["label"].append(0)
 

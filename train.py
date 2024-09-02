@@ -125,7 +125,7 @@ if __name__ == "__main__":
         loss_kwargs=None,
         tf=transforms.Compose([proc.STFT2D(),proc.NpToTensor(),]),
         batch_size=32,
-        n_epochs=500,
+        n_epochs=400,
         n_workers=0,
         df_train=df_train,
         seed=42,

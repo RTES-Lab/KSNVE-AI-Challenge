@@ -45,7 +45,6 @@ def calculate_score_and_save_csv(result_dir, loss_fn, df, filename, batch_size=1
             yhat = model(x)
             loss = loss_fn()(yhat, x)
 
-            file_number = f"{i:04d}"
             log["File"].append(file_names[i])
             log["Score"].append(loss.item())
 

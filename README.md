@@ -6,9 +6,9 @@
 <br>
 
 # 시스템 아키텍처
-![모델 구조](https://github.com/RTES-Lab/KSNVE-AI-Challenge/blob/final/model_architecture.png)
+![모델 구조](https://github.com/user-attachments/assets/d95796aa-0e7c-4733-a906-513ad7437046)
 
-제안된 STFT-TDS Fusion AutoEncoder (STFT-TDS FAE) 모델은 구름 베어링의 이상 탐지를 위해 설계된 혁신적인 아키텍처로, 세 가지 핵심 컴포넌트로 구성된다: Short-Time Fourier Transform (STFT) 기반 2D Convolutional AutoEncoder (CAE), Time Domain Statistics (TDS) 추출기, 그리고 Linear AutoEncoder (AE)이다. 본 모델은 베어링의 x축과 y축 방향에서 가속도계로 측정된 raw 진동 신호를 입력 데이터로 활용한다.
+ 제안된 STFT-TDS Fusion AutoEncoder (STFT-TDS FAE) 모델은 구름 베어링의 이상 탐지를 위해 설계된 혁신적인 아키텍처로, 세 가지 핵심 컴포넌트로 구성된다: Short-Time Fourier Transform (STFT) 기반 2D Convolutional AutoEncoder (CAE), Time Domain Statistics (TDS) 추출기, 그리고 Linear AutoEncoder (AE)이다. 본 모델은 베어링의 x축과 y축 방향에서 가속도계로 측정된 raw 진동 신호를 입력 데이터로 활용한다.
 
  첫 번째 컴포넌트인 STFT 2D CAE는 입력 신호의 시간-주파수 표현을 학습한다. 구체적으로, x축과 y축의 raw 데이터는 STFT를 통해 2차원 시간-주파수 행렬로 변환되며, 이는 2D CAE의 입력으로 사용된다. 2D CAE는 이 변환된 데이터로부터 주파수 도메인의 feature를 추출하고, reconstruction 과정을 통해 $L_{STFT}$라는 손실 값을 생성한다. 
 
